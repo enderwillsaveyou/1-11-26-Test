@@ -18,13 +18,30 @@ function processInput(text) {
   }
 }
 
+function listModels() {
+  const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+  if (!apiKey) {
+    return "No API key";
+  }
+
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models';
+  const options = {
+    method: 'get',
+    muteHttpExceptions: true,
+    headers: { 'x-goog-api-key': apiKey }
+  };
+
+  const resp = UrlFetchApp.fetch(url, options);
+  return resp.getContentText();
+}
+
 function callGemini(userText) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
   if (!apiKey) {
     return { error: true, message: "Missing GEMINI_API_KEY in Script Properties." };
   }
 
-  const url = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
   const systemInstruction = "Return ONLY valid JSON. Do not use markdown. " +
     "Schema: summary (string), tasks (array), calendar_events (array), research_questions (array), coding_tickets (array), uncertainty_or_refusal (object/null).";
@@ -35,7 +52,7 @@ function callGemini(userText) {
       parts: [{ text: systemInstruction + "\n\nUser input:\n" + userText }]
     }],
     generationConfig: {
-      temperature: 0.2 // responseMimeType removed to prevent 400 error
+      temperature: 0.2
     }
   };
 
@@ -52,7 +69,18 @@ function callGemini(userText) {
   const raw = resp.getContentText();
 
   if (status < 200 || status >= 300) {
-    return { error: true, message: "Gemini API call failed.", http_status: status, raw_response: raw };
+    const errorObj = {
+      error: true,
+      message: "Gemini API call failed.",
+      http_status: status,
+      raw_response: raw
+    };
+
+    if (status === 404) {
+      errorObj.available_models = listModels();
+    }
+
+    return errorObj;
   }
 
   let envelope = JSON.parse(raw);
