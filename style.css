@@ -1,0 +1,446 @@
+/* ========================================
+   GRID//OVERSEER - Tactical Dashboard Styles
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #141824;
+    --bg-tertiary: #1a1f2e;
+    --border-color: #2a3142;
+    --text-primary: #e8eaed;
+    --text-secondary: #9aa0a6;
+    --text-muted: #5f6368;
+    --accent-blue: #4a9eff;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-red: #ef4444;
+}
+
+body {
+    font-family: 'Monaco', 'Courier New', monospace;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    line-height: 1.6;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+header {
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent-blue);
+}
+
+.header-info {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#sim-status {
+    color: var(--accent-yellow);
+    text-transform: uppercase;
+}
+
+#sim-tick {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   MAIN LAYOUT
+   ======================================== */
+
+.main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ========================================
+   MAP CONTAINER (Left)
+   ======================================== */
+
+.map-container {
+    flex: 1;
+    background: var(--bg-secondary);
+    border-right: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#map-canvas {
+    flex: 1;
+    background: var(--bg-tertiary);
+}
+
+.map-controls {
+    padding: 12px;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+}
+
+.map-controls button {
+    padding: 8px 16px;
+    font-size: 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.map-controls button:hover {
+    background: var(--bg-secondary);
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+/* ========================================
+   CONTROL PANEL (Right)
+   ======================================== */
+
+.control-panel {
+    width: 350px;
+    background: var(--bg-secondary);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-section {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-section h2 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   SIMULATION CONTROLS
+   ======================================== */
+
+.sim-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sim-controls > div {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-primary {
+    flex: 1;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--border-color);
+}
+
+.btn-primary:hover {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.speed-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.speed-controls label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.btn-speed {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: inherit;
+    text-transform: uppercase;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-speed:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.btn-speed.active {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: var(--bg-primary);
+}
+
+/* ========================================
+   AGENT LIST
+   ======================================== */
+
+.agent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.agent-item {
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 12px;
+}
+
+.agent-item:hover {
+    border-color: var(--accent-blue);
+}
+
+.agent-item.selected {
+    background: var(--bg-primary);
+    border-color: var(--accent-blue);
+}
+
+.agent-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.agent-id {
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+.agent-state {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.agent-state.Traveling { color: var(--accent-yellow); }
+.agent-state.Scanning { color: var(--accent-green); }
+.agent-state.Returning { color: var(--accent-yellow); }
+.agent-state.Recharging { color: var(--accent-blue); }
+.agent-state.Idle { color: var(--text-muted); }
+
+.agent-battery {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   AGENT DETAILS
+   ======================================== */
+
+.agent-details {
+    font-size: 12px;
+}
+
+.agent-details .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.agent-details .detail-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.agent-details .detail-value {
+    color: var(--text-primary);
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ========================================
+   MISSION CONTROLS
+   ======================================== */
+
+.mission-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mission-select {
+    padding: 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.mission-params {
+    display: flex;
+    gap: 8px;
+}
+
+.mission-input {
+    flex: 1;
+    padding: 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.mission-input:focus, .mission-select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+/* ========================================
+   NARRATION CONTROLS
+   ======================================== */
+
+.narration-controls {
+    font-size: 12px;
+}
+
+.narration-controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.narration-controls input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ========================================
+   EVENT LOG (Bottom)
+   ======================================== */
+
+.event-log-container {
+    background: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+    padding: 16px 24px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-log-container h3 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.event-log {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.event-entry {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.event-timestamp {
+    color: var(--text-muted);
+    margin-right: 12px;
+}
+
+.event-message {
+    color: var(--text-primary);
+}
+
+.event-type-info { color: var(--accent-blue); }
+.event-type-success { color: var(--accent-green); }
+.event-type-warning { color: var(--accent-yellow); }
+.event-type-error { color: var(--accent-red); }
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
