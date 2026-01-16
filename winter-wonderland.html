@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Wonderland</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #89b5d6 50%, #c8e0f4 75%, #e8f4f8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Snowflake/Sparkle Effect */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1em;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                         0 0 40px rgba(135, 206, 250, 0.6);
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .subtitle {
+            color: #e8f4f8;
+            font-size: 1.2rem;
+            font-weight: 300;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Gallery Container */
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            animation: fadeIn 1s ease-in 0.5s backwards;
+        }
+
+        @media (min-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Gallery Item */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in backwards;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.6s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.7s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.8s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.9s; }
+        .gallery-item:nth-child(5) { animation-delay: 1s; }
+
+        .gallery-item:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(135, 206, 250, 0.5);
+            z-index: 20;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Image Overlay */
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+        }
+
+        .overlay h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #e8f4f8;
+        }
+
+        /* Like Button */
+        .like-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 30;
+        }
+
+        .like-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .like-btn.liked {
+            animation: heartBeat 0.5s ease;
+        }
+
+        .like-btn svg {
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .like-btn.liked svg {
+            fill: #ff4757;
+        }
+
+        .like-btn:not(.liked) svg {
+            fill: none;
+            stroke: #667eea;
+            stroke-width: 2;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1.1); }
+            75% { transform: scale(1.2); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+            color: #ffffff;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-divider {
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #e8f4f8, transparent);
+            margin: 0 auto 30px;
+            border-radius: 2px;
+        }
+
+        .footer-text {
+            font-size: 1.1rem;
+            color: #e8f4f8;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Snowflakes Container -->
+    <div id="snowflakes"></div>
+
+    <!-- Header -->
+    <header>
+        <h1>Winter Wonderland</h1>
+        <p class="subtitle">A magical collection of winter scenes</p>
+    </header>
+
+    <!-- Gallery -->
+    <div class="gallery-container">
+        <div class="gallery">
+            <!-- Image 1: Snowy Mountains -->
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=800&q=80"
+                     alt="Snowy Mountain Peak">
+                <button class="like-btn" aria-label="Like this image">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+                <div class="overlay">
+                    <h3>Snowy Mountain Peak</h3>
+                </div>
+            </div>
+
+            <!-- Image 2: Frozen Lake -->
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1519944159858-806d435dc86f?w=800&q=80"
+                     alt="Frozen Lake">
+                <button class="like-btn" aria-label="Like this image">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+                <div class="overlay">
+                    <h3>Frozen Lake</h3>
+                </div>
+            </div>
+
+            <!-- Image 3: Winter Forest -->
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1457269449834-928af64c684d?w=800&q=80"
+                     alt="Snow Covered Forest">
+                <button class="like-btn" aria-label="Like this image">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+                <div class="overlay">
+                    <h3>Snow Covered Forest</h3>
+                </div>
+            </div>
+
+            <!-- Image 4: Winter City -->
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1516815231560-8f41ec531527?w=800&q=80"
+                     alt="Winter City Lights">
+                <button class="like-btn" aria-label="Like this image">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+                <div class="overlay">
+                    <h3>Winter City Lights</h3>
+                </div>
+            </div>
+
+            <!-- Image 5: Ice Formation -->
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1485470733090-0aae1788d5af?w=800&q=80"
+                     alt="Ice Crystals">
+                <button class="like-btn" aria-label="Like this image">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+                <div class="overlay">
+                    <h3>Ice Crystals</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-divider"></div>
+            <div class="footer-icon">❄️</div>
+            <p class="footer-text">Experience the magic of winter through these breathtaking moments</p>
+            <p class="footer-text">Let the beauty of the season inspire wonder and joy</p>
+            <p class="copyright">&copy; 2026 Winter Wonderland Gallery</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create Snowflakes
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            const snowflakeCount = 50;
+            const snowflakeChars = ['❄', '❅', '❆', '✦', '✧', '✨'];
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+
+                // Random positioning and animation
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
+                snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        // Like Button Functionality
+        document.querySelectorAll('.like-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('liked');
+
+                // Add heart animation
+                if (this.classList.contains('liked')) {
+                    // Create floating heart
+                    const heart = document.createElement('div');
+                    heart.textContent = '❤️';
+                    heart.style.position = 'absolute';
+                    heart.style.left = e.clientX + 'px';
+                    heart.style.top = e.clientY + 'px';
+                    heart.style.fontSize = '2rem';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '1000';
+                    heart.style.animation = 'floatUp 1s ease-out forwards';
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 1000);
+                }
+            });
+        });
+
+        // Add floating heart animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatUp {
+                to {
+                    transform: translateY(-100px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize snowflakes
+        createSnowflakes();
+    </script>
+</body>
+</html>
