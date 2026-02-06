@@ -5,98 +5,112 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kingdom Hall IT Health Check — Maintenance Checklist</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f2f5;
-      color: #1a1a1a;
-      line-height: 1.6;
+      font-family: 'Noto Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #F5F5F5; /* Light gray background */
+      color: #212121; /* Dark charcoal text, almost black */
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* --- Header --- */
     header {
-      background: #1a3a5c;
-      color: white;
-      padding: 30px 20px;
+      background: #4A4A4A; /* Dark Charcoal */
+      color: #ffffff;
+      padding: 24px 20px;
       text-align: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+      border-bottom: 1px solid #333;
     }
 
     header h1 {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      margin-bottom: 4px;
     }
 
     header p {
-      font-size: 0.85rem;
-      opacity: 0.8;
-      margin-top: 4px;
+      font-size: 0.9rem;
+      color: #E0E0E0;
+      font-weight: 400;
     }
 
     .wrapper {
-      max-width: 960px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 24px 16px;
     }
 
-    /* Table of Contents */
-    #toc {
-      background: white;
+    /* --- Common Card Style --- */
+    .section-card, #toc, .quick-ref, .references, .legend {
+      background: #ffffff;
       border-radius: 8px;
-      padding: 24px 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       margin-bottom: 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: none;
+    }
+
+    /* --- Table of Contents --- */
+    #toc {
+      padding: 20px 24px;
     }
 
     #toc h2 {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      color: #1a3a5c;
-      border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 8px;
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+      color: #4A4A4A;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      font-weight: 700;
     }
 
     #toc ol {
-      padding-left: 20px;
+      padding-left: 24px;
     }
 
     #toc li {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      color: #555;
     }
 
     #toc a {
-      color: #2a6496;
+      color: #37474F; /* Muted Blue-Gray Link */
       text-decoration: none;
       font-weight: 500;
+      transition: color 0.2s;
     }
 
     #toc a:hover {
+      color: #0277BD;
       text-decoration: underline;
     }
 
-    /* Frequency Legend */
+    /* --- Legend --- */
     .legend {
-      background: white;
-      border-radius: 8px;
-      padding: 16px 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 16px 20px;
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
       align-items: center;
+      background: #fff;
     }
 
     .legend-title {
       font-weight: 700;
       font-size: 0.85rem;
-      color: #555;
+      color: #757575;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      margin-right: 4px;
     }
 
     .legend-item {
@@ -106,55 +120,51 @@
       font-size: 0.85rem;
     }
 
+    /* --- Frequency Badges (Material Colors) --- */
     .freq-badge {
       display: inline-block;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 16px;
+      font-size: 0.7rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       white-space: nowrap;
     }
 
-    .freq-weekly    { background: #e3f2fd; color: #1565c0; }
-    .freq-monthly   { background: #fff3e0; color: #e65100; }
-    .freq-quarterly { background: #f3e5f5; color: #7b1fa2; }
-    .freq-annually  { background: #fce4ec; color: #c62828; }
-    .freq-asneeded  { background: #e8f5e9; color: #2e7d32; }
+    .freq-weekly    { background: #E3F2FD; color: #1565C0; } /* Blue 50/800 */
+    .freq-monthly   { background: #FFF3E0; color: #E65100; } /* Orange 50/900 */
+    .freq-quarterly { background: #F3E5F5; color: #7B1FA2; } /* Purple 50/700 */
+    .freq-annually  { background: #FFEBEE; color: #C62828; } /* Red 50/800 */
+    .freq-asneeded  { background: #E8F5E9; color: #2E7d32; } /* Green 50/800 */
 
-    /* Section Cards */
-    .section-card {
-      background: white;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-
+    /* --- Section Cards (Accordion) --- */
     .section-header {
-      background: #1a3a5c;
+      background: #546E7A; /* Muted Blue-Gray */
       color: white;
-      padding: 16px 24px;
+      padding: 18px 24px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
       user-select: none;
+      transition: background 0.2s;
     }
 
     .section-header:hover {
-      background: #24507a;
+      background: #455A64; /* Darker Blue-Gray */
     }
 
     .section-header h2 {
       font-size: 1.1rem;
       font-weight: 600;
+      margin: 0;
     }
 
     .section-header .toggle-icon {
-      font-size: 1.2rem;
-      transition: transform 0.2s;
+      font-size: 1rem;
+      transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      opacity: 0.8;
     }
 
     .section-header.open .toggle-icon {
@@ -163,16 +173,22 @@
 
     .section-body {
       display: none;
-      padding: 0;
+      background: #fff;
     }
 
     .section-body.open {
       display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Frequency Groups */
+    /* --- Frequency Groups within Sections --- */
     .freq-group {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #EEEEEE;
     }
 
     .freq-group:last-child {
@@ -180,124 +196,139 @@
     }
 
     .freq-group-header {
-      padding: 12px 24px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      padding: 14px 24px;
+      background: #FAFAFA;
+      border-bottom: 1px solid #F0F0F0;
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: #fafafa;
-      border-bottom: 1px solid #eee;
     }
 
+    /* --- Checklists --- */
     .checklist {
       list-style: none;
-      padding: 8px 24px 16px 24px;
+      padding: 8px 0;
+      margin: 0;
     }
 
     .checklist li {
-      padding: 8px 0 8px 32px;
+      padding: 12px 24px 12px 56px; /* increased left padding for checkbox */
       position: relative;
       border-bottom: 1px solid #f5f5f5;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
+      color: #333;
+      transition: background 0.1s;
+    }
+
+    .checklist li:hover {
+      background: #fcfcfc;
     }
 
     .checklist li:last-child {
       border-bottom: none;
     }
 
+    /* Custom Checkbox Style */
     .checklist li::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 11px;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #bbb;
-      border-radius: 3px;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border: 2px solid #90A4AE; /* Muted Border */
+      border-radius: 4px;
       background: white;
+      transition: all 0.2s;
+    }
+    
+    /* Simulate Checked State Interaction (Optional Visual Cue) */
+    .checklist li:active::before {
+        background: #ECEFF1;
+        border-color: #546E7A;
     }
 
     .checklist li .ref {
-      display: inline;
+      display: inline-block;
       font-size: 0.8rem;
-      color: #888;
-      font-style: italic;
+      color: #78909C; /* Muted blue-gray text */
+      font-weight: 500;
+      margin-left: 6px;
+      background: #ECEFF1;
+      padding: 1px 6px;
+      border-radius: 4px;
     }
 
-    /* Quick Reference Table */
+    /* --- Quick Reference Table --- */
     .quick-ref {
-      background: white;
-      border-radius: 8px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 24px;
     }
 
     .quick-ref h2 {
-      font-size: 1.1rem;
-      margin-bottom: 14px;
-      color: #1a3a5c;
-      border-bottom: 2px solid #e0e0e0;
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+      color: #4A4A4A;
+      border-bottom: 2px solid #546E7A;
       padding-bottom: 8px;
     }
 
     .quick-ref table {
       width: 100%;
       border-collapse: collapse;
-    }
-
-    .quick-ref th, .quick-ref td {
-      text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid #eee;
       font-size: 0.9rem;
     }
 
     .quick-ref th {
-      background: #f5f7fa;
+      text-align: left;
+      padding: 12px;
+      background: #F5F5F5;
+      color: #424242;
       font-weight: 700;
-      color: #1a3a5c;
+      border-bottom: 2px solid #ddd;
     }
 
-    /* References */
+    .quick-ref td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    /* --- References --- */
     .references {
-      background: white;
-      border-radius: 8px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 24px;
     }
 
     .references h2 {
-      font-size: 1.1rem;
-      margin-bottom: 14px;
-      color: #1a3a5c;
-      border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 8px;
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+      color: #4A4A4A;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
     }
 
     .references h3 {
       font-size: 0.95rem;
-      margin: 16px 0 8px 0;
-      color: #333;
+      margin: 20px 0 10px 0;
+      color: #546E7A; /* Muted Blue-Gray Heading */
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .references ol {
-      padding-left: 20px;
+      padding-left: 24px;
     }
 
     .references li {
-      margin-bottom: 6px;
-      font-size: 0.88rem;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      line-height: 1.6;
     }
 
     .references a {
-      color: #2a6496;
+      color: #0277BD;
       text-decoration: none;
-      word-break: break-all;
+      font-weight: 500;
     }
 
     .references a:hover {
@@ -305,71 +336,93 @@
     }
 
     .references .note {
-      font-size: 0.82rem;
-      color: #777;
+      font-size: 0.85rem;
+      color: #757575;
       font-style: italic;
+      background: #F5F5F5;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: block;
+      margin-bottom: 16px;
+      border-left: 3px solid #B0BEC5;
     }
 
-    /* Back to Top */
+    /* --- Controls & Back to Top --- */
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      justify-content: flex-end;
+    }
+
+    .controls button {
+      background: #ffffff;
+      border: 1px solid #CFD8DC;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #455A64;
+      font-weight: 600;
+      font-family: 'Noto Sans', sans-serif;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+
+    .controls button:hover {
+      background: #F5F5F5;
+      color: #263238;
+      border-color: #B0BEC5;
+    }
+
     .back-to-top {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: #1a3a5c;
+      background: #546E7A;
       color: white;
       border: none;
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 99;
+      transition: background 0.2s, transform 0.2s;
     }
 
     .back-to-top:hover {
-      background: #24507a;
+      background: #455A64;
+      transform: translateY(-2px);
     }
 
-    /* Expand/Collapse All */
-    .controls {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .controls button {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 6px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      color: #333;
-    }
-
-    .controls button:hover {
-      background: #f0f0f0;
-    }
-
-    /* Print styles */
-    @media print {
-      header { position: static; }
-      .controls, .back-to-top { display: none !important; }
-      .section-body { display: block !important; }
-      .section-card { break-inside: avoid; }
-      .checklist li::before { border-color: #333; }
-      body { background: white; }
-      .section-card, #toc, .quick-ref, .references, .legend { box-shadow: none; border: 1px solid #ddd; }
-    }
-
+    /* --- Media Queries & Print --- */
     @media (max-width: 600px) {
       .wrapper { padding: 12px; }
+      header { padding: 20px 16px; text-align: left; }
       header h1 { font-size: 1.2rem; }
-      .legend { flex-direction: column; gap: 8px; }
+      .controls { justify-content: stretch; }
+      .controls button { flex: 1; }
+      .checklist li { padding-left: 50px; }
+    }
+
+    @media print {
+      body { background: white; color: black; }
+      header { position: static; background: none; color: black; border-bottom: 2px solid #000; box-shadow: none; padding: 0 0 20px 0; text-align: left; }
+      header h1 { color: #000; }
+      header p { color: #555; }
+      .controls, .back-to-top { display: none !important; }
+      .section-body { display: block !important; }
+      .section-card, #toc, .quick-ref, .references, .legend { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+      .section-header { background: #eee; color: black; border-bottom: 1px solid #ccc; }
+      .section-header .toggle-icon { display: none; }
+      .freq-badge { border: 1px solid #ccc; color: black !important; background: transparent !important; }
+      .checklist li::before { border-color: #000; }
+      a { text-decoration: underline; color: #000; }
     }
   </style>
 </head>
@@ -382,7 +435,6 @@
 
 <div class="wrapper">
 
-  <!-- Table of Contents -->
   <nav id="toc">
     <h2>Table of Contents</h2>
     <ol>
@@ -396,7 +448,6 @@
     </ol>
   </nav>
 
-  <!-- Legend -->
   <div class="legend">
     <span class="legend-title">Frequency:</span>
     <span class="legend-item"><span class="freq-badge freq-weekly">Weekly</span></span>
@@ -406,16 +457,12 @@
     <span class="legend-item"><span class="freq-badge freq-asneeded">As Needed</span></span>
   </div>
 
-  <!-- Controls -->
   <div class="controls">
     <button onclick="toggleAll(true)">Expand All</button>
     <button onclick="toggleAll(false)">Collapse All</button>
     <button onclick="window.print()">Print Checklist</button>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 1: ZOOM ATTENDANT COMPUTER -->
-  <!-- ============================================================ -->
   <div class="section-card" id="zoom">
     <div class="section-header" onclick="toggleSection(this)">
       <h2>1. Zoom Attendant Computer</h2>
@@ -472,9 +519,6 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 2: A/V COMPUTER -->
-  <!-- ============================================================ -->
   <div class="section-card" id="av">
     <div class="section-header" onclick="toggleSection(this)">
       <h2>2. A/V Computer (Media Playback &amp; Presentation)</h2>
@@ -533,9 +577,6 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 3: PASSWORDS & ACCOUNT SECURITY -->
-  <!-- ============================================================ -->
   <div class="section-card" id="passwords">
     <div class="section-header" onclick="toggleSection(this)">
       <h2>3. Passwords &amp; Account Security</h2>
@@ -576,9 +617,6 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 4: CYBERSECURITY -->
-  <!-- ============================================================ -->
   <div class="section-card" id="cybersecurity">
     <div class="section-header" onclick="toggleSection(this)">
       <h2>4. Cybersecurity (Reference S-287)</h2>
@@ -628,9 +666,6 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 5: INTERNET & NETWORK -->
-  <!-- ============================================================ -->
   <div class="section-card" id="network">
     <div class="section-header" onclick="toggleSection(this)">
       <h2>5. Internet &amp; Network</h2>
@@ -659,9 +694,6 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- QUICK-REFERENCE SUMMARY -->
-  <!-- ============================================================ -->
   <div class="quick-ref" id="quickref">
     <h2>Quick-Reference Summary</h2>
     <table>
@@ -692,9 +724,6 @@
     </table>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- REFERENCE DOCUMENTS & URLS -->
-  <!-- ============================================================ -->
   <div class="references" id="refs">
     <h2>Reference Documents &amp; URLs</h2>
     <p class="note">JW Hub documents require login. Links open the search results page &mdash; click "Expand" to view/download.</p>
