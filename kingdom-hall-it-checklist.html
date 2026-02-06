@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kingdom Hall IT Health Check — Maintenance Checklist</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #1a3a5c;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Table of Contents */
+    #toc {
+      background: white;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    #toc h2 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #1a3a5c;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+
+    #toc ol {
+      padding-left: 20px;
+    }
+
+    #toc li {
+      margin-bottom: 6px;
+    }
+
+    #toc a {
+      color: #2a6496;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #toc a:hover {
+      text-decoration: underline;
+    }
+
+    /* Frequency Legend */
+    .legend {
+      background: white;
+      border-radius: 8px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .legend-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    .freq-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .freq-weekly    { background: #e3f2fd; color: #1565c0; }
+    .freq-monthly   { background: #fff3e0; color: #e65100; }
+    .freq-quarterly { background: #f3e5f5; color: #7b1fa2; }
+    .freq-annually  { background: #fce4ec; color: #c62828; }
+    .freq-asneeded  { background: #e8f5e9; color: #2e7d32; }
+
+    /* Section Cards */
+    .section-card {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .section-header {
+      background: #1a3a5c;
+      color: white;
+      padding: 16px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .section-header:hover {
+      background: #24507a;
+    }
+
+    .section-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .section-header .toggle-icon {
+      font-size: 1.2rem;
+      transition: transform 0.2s;
+    }
+
+    .section-header.open .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .section-body {
+      display: none;
+      padding: 0;
+    }
+
+    .section-body.open {
+      display: block;
+    }
+
+    /* Frequency Groups */
+    .freq-group {
+      border-bottom: 1px solid #eee;
+    }
+
+    .freq-group:last-child {
+      border-bottom: none;
+    }
+
+    .freq-group-header {
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 8px 24px 16px 24px;
+    }
+
+    .checklist li {
+      padding: 8px 0 8px 32px;
+      position: relative;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 0.92rem;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #bbb;
+      border-radius: 3px;
+      background: white;
+    }
+
+    .checklist li .ref {
+      display: inline;
+      font-size: 0.8rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    /* Quick Reference Table */
+    .quick-ref {
+      background: white;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .quick-ref h2 {
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      color: #1a3a5c;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+
+    .quick-ref table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .quick-ref th, .quick-ref td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+
+    .quick-ref th {
+      background: #f5f7fa;
+      font-weight: 700;
+      color: #1a3a5c;
+    }
+
+    /* References */
+    .references {
+      background: white;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .references h2 {
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      color: #1a3a5c;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+
+    .references h3 {
+      font-size: 0.95rem;
+      margin: 16px 0 8px 0;
+      color: #333;
+    }
+
+    .references ol {
+      padding-left: 20px;
+    }
+
+    .references li {
+      margin-bottom: 6px;
+      font-size: 0.88rem;
+    }
+
+    .references a {
+      color: #2a6496;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .references a:hover {
+      text-decoration: underline;
+    }
+
+    .references .note {
+      font-size: 0.82rem;
+      color: #777;
+      font-style: italic;
+    }
+
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1a3a5c;
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+    }
+
+    .back-to-top:hover {
+      background: #24507a;
+    }
+
+    /* Expand/Collapse All */
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .controls button {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 6px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    .controls button:hover {
+      background: #f0f0f0;
+    }
+
+    /* Print styles */
+    @media print {
+      header { position: static; }
+      .controls, .back-to-top { display: none !important; }
+      .section-body { display: block !important; }
+      .section-card { break-inside: avoid; }
+      .checklist li::before { border-color: #333; }
+      body { background: white; }
+      .section-card, #toc, .quick-ref, .references, .legend { box-shadow: none; border: 1px solid #ddd; }
+    }
+
+    @media (max-width: 600px) {
+      .wrapper { padding: 12px; }
+      header h1 { font-size: 1.2rem; }
+      .legend { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Kingdom Hall IT Health Check</h1>
+  <p>Maintenance Checklist &mdash; Based on 16 JW Hub Documents &amp; IT Best Practices</p>
+</header>
+
+<div class="wrapper">
+
+  <!-- Table of Contents -->
+  <nav id="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#zoom">Zoom Attendant Computer</a></li>
+      <li><a href="#av">A/V Computer (Media Playback &amp; Presentation)</a></li>
+      <li><a href="#passwords">Passwords &amp; Account Security</a></li>
+      <li><a href="#cybersecurity">Cybersecurity (Reference S-287)</a></li>
+      <li><a href="#network">Internet &amp; Network</a></li>
+      <li><a href="#quickref">Quick-Reference Summary</a></li>
+      <li><a href="#refs">Reference Documents &amp; URLs</a></li>
+    </ol>
+  </nav>
+
+  <!-- Legend -->
+  <div class="legend">
+    <span class="legend-title">Frequency:</span>
+    <span class="legend-item"><span class="freq-badge freq-weekly">Weekly</span></span>
+    <span class="legend-item"><span class="freq-badge freq-monthly">Monthly</span></span>
+    <span class="legend-item"><span class="freq-badge freq-quarterly">Quarterly</span></span>
+    <span class="legend-item"><span class="freq-badge freq-annually">Annually</span></span>
+    <span class="legend-item"><span class="freq-badge freq-asneeded">As Needed</span></span>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button onclick="toggleAll(true)">Expand All</button>
+    <button onclick="toggleAll(false)">Collapse All</button>
+    <button onclick="window.print()">Print Checklist</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: ZOOM ATTENDANT COMPUTER -->
+  <!-- ============================================================ -->
+  <div class="section-card" id="zoom">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>1. Zoom Attendant Computer</h2>
+      <span class="toggle-icon">&#9660;</span>
+    </div>
+    <div class="section-body">
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-weekly">Weekly</span></div>
+        <ul class="checklist">
+          <li>Verify Zoom is updated to the latest version (Zoom auto-updates can fail silently)</li>
+          <li>Test the Zoom meeting link and confirm it connects properly before the meeting</li>
+          <li>Confirm the waiting room is enabled and functioning</li>
+          <li>Check that the correct co-hosts and attendant roles are assigned</li>
+          <li>Verify screen sharing is restricted to hosts/co-hosts only</li>
+          <li>Test audio/video feed from the attendant's perspective</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-monthly">Monthly</span></div>
+        <ul class="checklist">
+          <li>Restart the computer fully (not just sleep/wake) to clear memory and apply pending updates</li>
+          <li>Check Windows/macOS updates and install any pending security patches</li>
+          <li>Run a full antivirus/malware scan</li>
+          <li>Clear browser cache and temporary files</li>
+          <li>Verify the Zoom license status is active and not expiring <span class="ref">(per S-413)</span></li>
+          <li>Confirm the Zoom account password is still working and known to authorized brothers</li>
+          <li>Test the internet connection speed &mdash; minimum recommended is 3&ndash;5 Mbps upload for stable video</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-quarterly">Quarterly</span></div>
+        <ul class="checklist">
+          <li>Review who has access to the Zoom account credentials and update if needed</li>
+          <li>Change the Zoom meeting password per the congregation's password rotation schedule <span class="ref">(reference S-287)</span></li>
+          <li>Verify Zoom meeting settings haven't been altered: waiting room, mute on entry, chat restrictions, recording disabled</li>
+          <li>Check that the computer's hard drive has at least 15&ndash;20% free space</li>
+          <li>Review and remove any unnecessary software or browser extensions</li>
+          <li>Confirm the computer's power settings won't cause it to sleep mid-meeting</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-annually">Annually</span></div>
+        <ul class="checklist">
+          <li>Evaluate whether the computer hardware still meets Zoom's minimum requirements</li>
+          <li>Review the Zoom license renewal timeline <span class="ref">(per S-413)</span></li>
+          <li>Confirm the congregation's Zoom account email is accessible and monitored</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: A/V COMPUTER -->
+  <!-- ============================================================ -->
+  <div class="section-card" id="av">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>2. A/V Computer (Media Playback &amp; Presentation)</h2>
+      <span class="toggle-icon">&#9660;</span>
+    </div>
+    <div class="section-body">
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-weekly">Weekly</span></div>
+        <ul class="checklist">
+          <li>Verify JW Library app is updated to the latest version</li>
+          <li>Confirm all meeting media for the week has been downloaded and is ready for playback <span class="ref">(per S-144)</span></li>
+          <li>Test audio output levels through the Kingdom Hall sound system</li>
+          <li>Test video output to the monitors/displays &mdash; confirm resolution and aspect ratio are correct</li>
+          <li>Check all cable connections (HDMI, USB, audio) for secure fit</li>
+          <li>Confirm the correct meeting media is queued and in order</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-monthly">Monthly</span></div>
+        <ul class="checklist">
+          <li>Restart the computer fully</li>
+          <li>Install all operating system security updates</li>
+          <li>Run antivirus/malware scan</li>
+          <li>Clear temporary files and old meeting media no longer needed</li>
+          <li>Check that display/monitor firmware is current (if applicable)</li>
+          <li>Test the backup plan: know what to do if the primary computer fails mid-meeting (e.g., tablet backup, phone hotspot)</li>
+          <li>Verify audio mixer or sound board settings haven't drifted from the standard configuration</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-quarterly">Quarterly</span></div>
+        <ul class="checklist">
+          <li>Inspect all physical cables for wear, fraying, or loose connections</li>
+          <li>Clean computer vents and fans to prevent overheating</li>
+          <li>Check that USB ports, HDMI ports, and audio jacks are all functioning</li>
+          <li>Verify the computer's date/time settings are correct (auto-sync enabled)</li>
+          <li>Review and remove any unauthorized software</li>
+          <li>Confirm the computer is NOT connected to personal accounts, cloud storage, or non-approved services</li>
+          <li>Test the backup media playback method <span class="ref">(per S-127 guidelines for JW Library)</span></li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-annually">Annually</span></div>
+        <ul class="checklist">
+          <li>Evaluate hardware condition: battery health (if laptop), hard drive health, RAM adequacy</li>
+          <li>Consider whether the computer meets current minimum specs for JW Library and media playback</li>
+          <li>Review A/V setup against current S-261 hybrid meeting instructions for any configuration changes</li>
+          <li>Check monitor/display condition for dead pixels, brightness degradation, or burn-in</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: PASSWORDS & ACCOUNT SECURITY -->
+  <!-- ============================================================ -->
+  <div class="section-card" id="passwords">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>3. Passwords &amp; Account Security</h2>
+      <span class="toggle-icon">&#9660;</span>
+    </div>
+    <div class="section-body">
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-monthly">Monthly</span></div>
+        <ul class="checklist">
+          <li>Verify all authorized brothers know the current Zoom meeting password</li>
+          <li>Confirm the Zoom host/co-host account passwords are stored securely (not on sticky notes at the KH)</li>
+          <li>Check that the JW Hub account for the congregation is accessible</li>
+          <li>Verify jw.org congregation account access is functioning</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-quarterly">Quarterly</span></div>
+        <ul class="checklist">
+          <li>Rotate the Zoom meeting passcode</li>
+          <li>Rotate the Zoom account login password</li>
+          <li>Review who has access to each account and remove anyone no longer serving in that role</li>
+          <li>Change the Kingdom Hall Wi-Fi password if one exists</li>
+          <li>Update any shared passwords for the A/V or Zoom computers if applicable</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-asneeded">As Needed (Role Changes)</span></div>
+        <ul class="checklist">
+          <li>Immediately update all passwords when a brother is removed from or added to the attendant/A/V role</li>
+          <li>Transfer account ownership if the Zoom account holder changes assignments</li>
+          <li>Update JW Hub access if elders or servants change</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: CYBERSECURITY -->
+  <!-- ============================================================ -->
+  <div class="section-card" id="cybersecurity">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>4. Cybersecurity (Reference S-287)</h2>
+      <span class="toggle-icon">&#9660;</span>
+    </div>
+    <div class="section-body">
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-weekly">Weekly</span></div>
+        <ul class="checklist">
+          <li>Confirm the Kingdom Hall computers are NOT being used for personal browsing, email, or downloads</li>
+          <li>Verify no unauthorized USB drives or devices have been connected</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-monthly">Monthly</span></div>
+        <ul class="checklist">
+          <li>Ensure antivirus definitions are up to date</li>
+          <li>Confirm the operating system firewall is enabled</li>
+          <li>Check that the computers auto-lock after a period of inactivity</li>
+          <li>Verify no unfamiliar software has been installed</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-quarterly">Quarterly</span></div>
+        <ul class="checklist">
+          <li>Review the S-287 Cybersecurity Guidelines to ensure continued compliance</li>
+          <li>Confirm the Kingdom Hall network has a strong, unique Wi-Fi password using WPA2 or WPA3 encryption</li>
+          <li>Verify that the router firmware is up to date (if the congregation manages it)</li>
+          <li>Check that Bluetooth and file sharing are disabled on the Kingdom Hall computers when not needed</li>
+          <li>Confirm that no congregation data or personal information is stored on the computers unnecessarily</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-annually">Annually</span></div>
+        <ul class="checklist">
+          <li>Conduct a full cybersecurity review against S-287 guidelines</li>
+          <li>Evaluate whether any new threats or guidelines have been published on JW Hub</li>
+          <li>Review the Disaster Preparedness Program as it relates to data and IT recovery</li>
+          <li>Assess whether the congregation's IT setup needs any hardware or configuration upgrades</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: INTERNET & NETWORK -->
+  <!-- ============================================================ -->
+  <div class="section-card" id="network">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>5. Internet &amp; Network</h2>
+      <span class="toggle-icon">&#9660;</span>
+    </div>
+    <div class="section-body">
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-monthly">Monthly</span></div>
+        <ul class="checklist">
+          <li>Test internet speed and stability (minimum 3&ndash;5 Mbps upload for Zoom)</li>
+          <li>Verify the VoIP telephone system is working <span class="ref">(per Kingdom Hall VoIP Telephone Setup document)</span></li>
+          <li>Confirm the router is functioning and not overheating</li>
+        </ul>
+      </div>
+
+      <div class="freq-group">
+        <div class="freq-group-header"><span class="freq-badge freq-quarterly">Quarterly</span></div>
+        <ul class="checklist">
+          <li>Restart the router/modem to clear any connection issues</li>
+          <li>Check for ISP service advisories or outages in the area</li>
+          <li>Review the internet plan to ensure it meets the congregation's bandwidth needs (especially if multiple devices stream simultaneously during hybrid meetings)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- QUICK-REFERENCE SUMMARY -->
+  <!-- ============================================================ -->
+  <div class="quick-ref" id="quickref">
+    <h2>Quick-Reference Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Frequency</th>
+          <th>Key Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="freq-badge freq-weekly">Weekly</span></td>
+          <td>Test Zoom + A/V before meetings, verify media is ready, check connections</td>
+        </tr>
+        <tr>
+          <td><span class="freq-badge freq-monthly">Monthly</span></td>
+          <td>OS updates, antivirus scans, restart computers, test internet speed, verify passwords work</td>
+        </tr>
+        <tr>
+          <td><span class="freq-badge freq-quarterly">Quarterly</span></td>
+          <td>Rotate passwords, inspect cables/hardware, review account access, clean equipment</td>
+        </tr>
+        <tr>
+          <td><span class="freq-badge freq-annually">Annually</span></td>
+          <td>Full hardware evaluation, cybersecurity audit against S-287, review all JW Hub documentation for updates</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- REFERENCE DOCUMENTS & URLS -->
+  <!-- ============================================================ -->
+  <div class="references" id="refs">
+    <h2>Reference Documents &amp; URLs</h2>
+    <p class="note">JW Hub documents require login. Links open the search results page &mdash; click "Expand" to view/download.</p>
+
+    <h3>Cybersecurity</h3>
+    <ol>
+      <li><strong>S-287</strong> Cybersecurity Guidelines for Kingdom Halls (Rev. 7/24)<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-287%22}" target="_blank">hub.jw.org &mdash; S-287</a></li>
+    </ol>
+
+    <h3>Zoom / Videoconferencing</h3>
+    <ol start="2">
+      <li><strong>S-413</strong> Discounted Zoom License Ordering and Setup Guide<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-413%22}" target="_blank">hub.jw.org &mdash; S-413</a></li>
+      <li><strong>S-179</strong> Zoom Online Videoconferencing Instructions<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-179%22}" target="_blank">hub.jw.org &mdash; S-179</a></li>
+      <li>Zoom Tutorial &mdash; Attendant and Audio/Video Support<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22Zoom%20Tutorial%22}" target="_blank">hub.jw.org &mdash; Zoom Tutorial</a></li>
+      <li>Kingdom Hall Conferencing System<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22Kingdom%20Hall%20Conferencing%20System%22}" target="_blank">hub.jw.org &mdash; KH Conferencing System</a></li>
+    </ol>
+
+    <h3>Audio/Video Systems &amp; Hybrid Meetings</h3>
+    <ol start="6">
+      <li><strong>S-261</strong> Audio/Video Instructions for Hybrid Meetings<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-261%22}" target="_blank">hub.jw.org &mdash; S-261</a></li>
+      <li><strong>S-261sl</strong> Audio/Video Instructions for Hybrid Meetings in Sign Languages<br>
+        <span class="note">(same search as S-261 above)</span></li>
+      <li><strong>S-260</strong> Audio/Video Guidelines for Resuming In-Person Meetings<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-260%22}" target="_blank">hub.jw.org &mdash; S-260</a></li>
+      <li><strong>S-178</strong> Audio/Video Guidelines for Those Giving Public Talks via Videoconference<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-178%22}" target="_blank">hub.jw.org &mdash; S-178</a></li>
+      <li>Kingdom Hall Video Systems<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22Kingdom%20Hall%20Video%20Systems%22}" target="_blank">hub.jw.org &mdash; KH Video Systems</a></li>
+      <li>Kingdom Hall Audio Systems<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22Kingdom%20Hall%20Audio%20Systems%22}" target="_blank">hub.jw.org &mdash; KH Audio Systems</a></li>
+    </ol>
+
+    <h3>Media Playback &amp; Technology</h3>
+    <ol start="12">
+      <li><strong>S-144</strong> Media Playback During Meetings<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-144%22}" target="_blank">hub.jw.org &mdash; S-144</a></li>
+      <li><strong>S-127</strong> Media Playback Using JW Library Sign Language<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-127%22}" target="_blank">hub.jw.org &mdash; S-127</a></li>
+    </ol>
+
+    <h3>IT Infrastructure &amp; Access</h3>
+    <ol start="14">
+      <li>Kingdom Hall VoIP Telephone Setup<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22Kingdom%20Hall%20VoIP%20Telephone%22}" target="_blank">hub.jw.org &mdash; KH VoIP Telephone</a></li>
+      <li><strong>A-224</strong> Agreement for Loan of Equipment<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22A-224%22}" target="_blank">hub.jw.org &mdash; A-224</a></li>
+      <li><strong>S-131</strong> Instructions for Accessing My Profile and My Applications Features on JW.ORG<br>
+        <a href="https://hub.jw.org/home/en/documents?q={%22searchText%22:%22S-131%22}" target="_blank">hub.jw.org &mdash; S-131</a></li>
+    </ol>
+
+    <h3>Supplementary Reading (jw.org &mdash; Public)</h3>
+    <ol start="17">
+      <li>"Passwords &mdash; A Key to Security" (Awake!)<br>
+        <a href="https://www.jw.org/en/library/magazines/g20010622/Passwords-A-Key-to-Security/" target="_blank">jw.org article</a></li>
+      <li>"Internet Fraud &mdash; Are You at Risk?" (Awake!)<br>
+        <a href="https://www.jw.org/en/library/magazines/g201201/Internet-Fraud-Are-You-at-Risk/" target="_blank">jw.org article</a></li>
+      <li>"Cyberattack!" (Awake!)<br>
+        <a href="https://www.jw.org/en/library/magazines/g201205/Cyberattack/" target="_blank">jw.org article</a></li>
+      <li>"How to Teach Teens Internet Safety" (Awake!)<br>
+        <a href="https://www.jw.org/en/library/magazines/g201405/teach-teens-internet-safety/" target="_blank">jw.org article</a></li>
+    </ol>
+  </div>
+
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">&#9650;</button>
+
+<script>
+  // Toggle individual sections
+  function toggleSection(headerEl) {
+    headerEl.classList.toggle('open');
+    const body = headerEl.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  // Expand/Collapse all
+  function toggleAll(open) {
+    document.querySelectorAll('.section-header').forEach(function(h) {
+      const body = h.nextElementSibling;
+      if (open) {
+        h.classList.add('open');
+        body.classList.add('open');
+      } else {
+        h.classList.remove('open');
+        body.classList.remove('open');
+      }
+    });
+  }
+
+  // Back to top button
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById('backToTop');
+    if (window.scrollY > 400) {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
